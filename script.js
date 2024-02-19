@@ -24,25 +24,20 @@ function calculateAge() {
 
     year = currentYear - birthYear;
 
-    if (currentMonth >= birthMonth) {
+    if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+        year--;
+        month = 12 - (birthMonth - currentMonth);
+    } else {
         month = currentMonth - birthMonth;
-    } else {
-        year--;
-        month = (currentMonth + 12) - birthMonth;
     }
 
-    if (currentDay >= birthDay) {
+    if (currentDay < birthDay) {
+        let prevMonthDays = getDaysInMonth(currentYear, currentMonth - 1);
+        day = prevMonthDays - birthDay + currentDay;
+    } else {
         day = currentDay - birthDay;
-    } else {
-        month--;
-        day = getDaysInMonth(birthYear, birthMonth) + currentDay - birthDay;
     }
 
-    if (currentMonth < birthMonth) {
-        year--;
-    }
-
-    // Using template literals for string interpolation
     result.innerHTML = `You are <span>${year}</span> years, <span>${month}</span> months, and <span>${day}</span> days old.`;
 }
 
